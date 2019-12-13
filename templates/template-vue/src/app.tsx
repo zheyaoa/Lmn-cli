@@ -1,6 +1,7 @@
 import Component from 'vue-class-component'
 import * as tsx from 'vue-tsx-support'
-import '.style/scss'
+import './demo.scss'
+import './style.scss'
 
 @Component
 export default class App extends tsx.Component<{}> {

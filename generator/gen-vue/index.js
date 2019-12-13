@@ -46,6 +46,6 @@ module.exports = class extends Generator {
         this.npmInstall()
     }
     ending(){
-        console.log("Happy ending")
+        console.log("Start to install dependence")
     }
 };

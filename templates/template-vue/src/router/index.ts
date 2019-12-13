@@ -6,7 +6,7 @@ Vue.use(VueRouter)
 const routes: RouteConfig[] = [
 	{
 		path: '/foo',
-		component: () => import('@/components/FOO')
+		component: () => import('@/components/Foo')
 	},
 	{
 		path: '/bar',

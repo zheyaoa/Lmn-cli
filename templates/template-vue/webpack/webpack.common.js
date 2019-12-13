@@ -1,58 +1,38 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin') 
-
-const target = process.env.TARGET || 'http://127.0.0.1'
-const port = process.env.PORT || 8080
-const devServer = {
-  port: port,
-  compress: true,
-  open: true,
-  historyApiFallback: {
-    index:'/static/'
-  },
-};
 
 module.exports = {
   entry: "./src/index.ts",
-  devtool: process.env.NODE_ENV === 'production'?'source-map':'inline-source-map',
-  target: 'web',
   output: {
     filename: "index.[hash:7].js",
-    path: path.resolve(__dirname, "dist"),
+    path: path.resolve(__dirname, "../dist"),
     publicPath: '/static'
   },
   resolve: {
     extensions: [".ts", ".tsx", ".js", ".json"],
     alias:{
-      "@": path.resolve(__dirname,'src')
+      "@": path.resolve(__dirname,'../src')
     }
   },
   module: {
     rules: [
       {
         test: /\.tsx?$/,
-        use: ["babel-loader"],
-        exclude: [/node_modules/]
-      },
-      {
-        test: /\.scss$/,
         use: [
+          'thread-loader',
           {
-            loader: MiniCssExtractPlugin.loader,
+            loader: "babel-loader",
             options:{
-              publicPath: './'
+              cacheDirectory:true
             }
-          },
-          "css-loader",
-          'sass-loader'
+          }
         ],
         exclude: [/node_modules/]
       },
       {
         test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
-        loader: [
+        use: [
           {
             loader: "url-loader",
             options: {
@@ -64,7 +44,7 @@ module.exports = {
       },
       {
         test: /\.(png|jpe?g|gif|webp)(\?.*)?$/,
-        loader: [
+        use: [
           {
             loader: "url-loader",
             options: {
@@ -81,15 +61,12 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: "./public/index.html",
       favicon: "public/favicon.ico",
+      filename: 'index.html',
+      title: 'lmn-cli',
       minify:{
         removeComments:true,
         collapseInlineTagWhitespace:true
       }
-    }),
-    new MiniCssExtractPlugin({
-      filename: "styles/[name].[hash:7].css",
-      chunkFilename: "styles/[id].[hash:7].css"
     })
-  ],
-  devServer
+  ]
 };
